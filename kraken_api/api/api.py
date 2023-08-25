@@ -1,5 +1,4 @@
 from dotenv import dotenv_values
-import os
 
 import time
 import urllib.parse
