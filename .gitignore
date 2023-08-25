@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 #auths
-0/
+**/0/private
