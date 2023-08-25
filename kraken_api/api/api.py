@@ -1,3 +1,6 @@
+from dotenv import dotenv_values
+import os
+
 import time
 import urllib.parse
 import hashlib
@@ -18,11 +21,7 @@ data = {
     'nonce': time.time()
 }
 
-keys = []
-file = open('./kraken_api/0/private/new-api-key-test', 'r')
-for line in file:
-    keys.append(line)
-
-signature = get_kraken_signature(keys[0], data, keys[1])
+secrets = dotenv_values("./kraken_api/0/private/.env")
+signature = get_kraken_signature(secrets['API_KEY'], data, secrets['API_SECRET'])
 
 print('API-Sign: {}'.format(signature))

@@ -161,3 +161,4 @@ cython_debug/
 
 #auths
 **/0/private
+.env
