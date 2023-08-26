@@ -15,12 +15,3 @@ def get_kraken_signature(urlpath, data, secret):
     mac = hmac.new(base64.b64decode(secret), message, hashlib.sha512)
     sigdigest = base64.b64encode(mac.digest())
     return sigdigest.decode()
-
-data = {
-    'nonce': time.time()
-}
-
-secrets = dotenv_values("./kraken_api/0/private/.env")
-signature = get_kraken_signature(secrets['API_KEY'], data, secrets['API_SECRET'])
-
-print('API-Sign: {}'.format(signature))
