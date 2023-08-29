@@ -103,7 +103,8 @@ def get_recent_trades():
 
 def get_recent_spreads():
     """
-    
+    Returns the last ~200 top-of-book spreads for a given pair
+
     Parameters:\n
     [required] pair='ASSET_PAIR' => Asset pair to get data for
     [optional] since:int=UNIX_TIMESTAMP => Returns spread data since given timestamp.
