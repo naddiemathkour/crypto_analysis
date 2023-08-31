@@ -102,8 +102,7 @@ def get_closed_orders():
     [optional] closetime:string (default: 'both', ['open', 'close', 'both']) => Which time to use in search.
     [optional] consolidate_taker:boolean (default: True) => Wheter or not to consolidate trades by individual taker trades.
     """
-    print(kraken_request('/0/private/ClosedOrders', {'nonce':str(int(1000*time.time())), 'trades': True}, api_key, api_sec).json())
+    return kraken_request('/0/private/ClosedOrders', {'nonce':str(int(1000*time.time())), 'trades': True}, api_key, api_sec).json()
 
 
-get_closed_orders()
 #print(get_server_time()) #Before moving on: try to get closed orders to print. Also an issue with relative importing from market_data_api.py
