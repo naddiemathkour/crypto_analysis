@@ -1,8 +1,11 @@
 import requests
 import time
 import dotenv
+import urllib.parse
+import hashlib
+import hmac
+import base64
 
-from signature.kraken_signature import get_kraken_signature
 
 """
 Private Market Data api access points for Kraken.
@@ -11,10 +14,20 @@ Link to published REST API documentation: https://docs.kraken.com/rest/#tag/Mark
 """
 
 secrets = dotenv.dotenv_values(dotenv.find_dotenv())
-
 api_key = secrets['API_KEY_KRAKEN']
 api_sec = secrets['API_SEC_KRAKEN']
 api_url = 'https://api.kraken.com'
+
+def get_kraken_signature(urlpath, data, secret):
+
+    postdata = urllib.parse.urlencode(data)
+    encoded = (str(data['nonce']) + postdata).encode()
+    message = urlpath.encode() + hashlib.sha256(encoded).digest()
+
+    mac = hmac.new(base64.b64decode(secret), message, hashlib.sha512)
+    sigdigest = base64.b64encode(mac.digest())
+    return sigdigest.decode()
+
 
 def kraken_request(uri_path, data, api_key, api_sec):
     """
@@ -28,6 +41,7 @@ def kraken_request(uri_path, data, api_key, api_sec):
     headers['API-Sign'] = get_kraken_signature(uri_path, data, api_sec)
     return requests.post((api_url + uri_path), headers=headers, data=data)
 
+
 def get_account_balance():
     """
     Retrieve all cash balances, net of pending withdrawals.\n
@@ -35,6 +49,7 @@ def get_account_balance():
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.
     """
     return kraken_request('/0/private/Balance', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+
 
 def get_extended_account_balance():
     """
@@ -44,6 +59,7 @@ def get_extended_account_balance():
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.\n
     """
     return kraken_request('/0/private/BalanceEx', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+
 
 def get_trade_balance(asset):
     """
@@ -57,6 +73,7 @@ def get_trade_balance(asset):
 
     return kraken_request('/0/private/TradeBalance', {'nonce':str(int(1000*time.time())), 'asset':asset}, api_key, api_sec).json()
 
+
 def get_open_orders():
     """
     Retrieve information about currently open orders.
@@ -68,9 +85,10 @@ def get_open_orders():
     """
     return kraken_request('/0/private/OpenOrders', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
 
+
 def get_closed_orders():
     """
-    Retrieve information about orders that have been closed (filled or cancelled).
+    Retrieve information about orders that have been closed (filled or cancelled THROUGH KRAKEN PRO).
     50 results are returned at a time, the most recent by default.
     Note: If an order's tx ID is given for start or end time, the order's opening time (opentm) is used
 
@@ -84,6 +102,8 @@ def get_closed_orders():
     [optional] closetime:string (default: 'both', ['open', 'close', 'both']) => Which time to use in search.
     [optional] consolidate_taker:boolean (default: True) => Wheter or not to consolidate trades by individual taker trades.
     """
-    return kraken_request('/0/private/ClosedOrders', {'nonce':str(int(1000*time.time())), 'trades': True}, api_key, api_sec).json()
+    print(kraken_request('/0/private/ClosedOrders', {'nonce':str(int(1000*time.time())), 'trades': True}, api_key, api_sec).json())
 
-get_closed_orders() #Before moving on: try to get closed orders to print. Also an issue with relative importing from market_data_api.py
+
+get_closed_orders()
+#print(get_server_time()) #Before moving on: try to get closed orders to print. Also an issue with relative importing from market_data_api.py
