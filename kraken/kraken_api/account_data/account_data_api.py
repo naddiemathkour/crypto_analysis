@@ -1,33 +1,12 @@
 import requests
 import time
-import dotenv
-import urllib.parse
-import hashlib
-import hmac
-import base64
-
+from ..kraken_signature.authorize_signature import *
 
 """
-Private Market Data api access points for Kraken.
-Access to these functions requires a signature. This signature is aquired with accompanied kraken_signature.py file.
-Link to published REST API documentation: https://docs.kraken.com/rest/#tag/Market-Data
+Private Account Data api access points for Kraken.
+Access to these functions requires a signature. This signature is aquired with accompanied and imported authorize_signature.py file.
+Link to published REST API documentation: https://docs.kraken.com/rest/#tag/Account-Data
 """
-
-secrets = dotenv.dotenv_values(dotenv.find_dotenv())
-api_key = secrets['API_KEY_KRAKEN']
-api_sec = secrets['API_SEC_KRAKEN']
-api_url = 'https://api.kraken.com'
-
-def get_kraken_signature(urlpath, data, secret):
-
-    postdata = urllib.parse.urlencode(data)
-    encoded = (str(data['nonce']) + postdata).encode()
-    message = urlpath.encode() + hashlib.sha256(encoded).digest()
-
-    mac = hmac.new(base64.b64decode(secret), message, hashlib.sha512)
-    sigdigest = base64.b64encode(mac.digest())
-    return sigdigest.decode()
-
 
 def kraken_request(uri_path, data, api_key, api_sec):
     """
@@ -251,3 +230,5 @@ def delete_export_report(data):
     [required] type:string (enum: ['cancel', 'delete']) => delete can only be used for reports that have already been processed. Use cancel for queued or processing reports.
     """
     return kraken_request('/0/private/RemoveExport', data, api_key, api_sec).json()
+
+#todo: function that generates data, function that generates nonce
