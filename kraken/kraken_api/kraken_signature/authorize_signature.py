@@ -1,7 +1,12 @@
+import dotenv
 import urllib.parse
 import hashlib
 import hmac
 import base64
+
+api_url = 'https://api.kraken.com'
+api_key = dotenv.dotenv_values(dotenv.find_dotenv())['API_KEY_KRAKEN']
+api_sec = dotenv.dotenv_values(dotenv.find_dotenv())['API_SEC_KRAKEN']
 
 def get_kraken_signature(urlpath, data, secret):
 
