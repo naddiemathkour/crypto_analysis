@@ -8,7 +8,6 @@ function headers.
 """
 
 import requests
-import time
 from ..kraken_signature.authorize_signature import *
 
 def kraken_request(uri_path, data, api_key, api_sec):

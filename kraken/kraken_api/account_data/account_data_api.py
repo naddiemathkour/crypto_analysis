@@ -5,7 +5,6 @@ Link to published REST API documentation: https://docs.kraken.com/rest/#tag/Acco
 """
 
 import requests
-import time
 from ..kraken_signature.authorize_signature import *
 
 def kraken_request(uri_path, data, api_key, api_sec):
@@ -21,17 +20,17 @@ def kraken_request(uri_path, data, api_key, api_sec):
     return requests.post((api_url + uri_path), headers=headers, data=data)
 
 
-def get_account_balance():
+def get_account_balance(data):
     """
     Retrieve all cash balances, net of pending withdrawals.\n
 
     Data Parameters:
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.
     """
-    return kraken_request('/0/private/Balance', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/Balance', data, api_key, api_sec).json()
 
 
-def get_extended_account_balance():
+def get_extended_account_balance(data):
     """
     Retrieve all extended account balances, including credits and held amounts.
     Balance available for trading is calculated as: available balance = balance + credit - credit_used - hold_trade.\n
@@ -39,10 +38,10 @@ def get_extended_account_balance():
     Data Parameters:
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.\n
     """
-    return kraken_request('/0/private/BalanceEx', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/BalanceEx', data, api_key, api_sec).json()
 
 
-def get_trade_balance(asset):
+def get_trade_balance(data):
     """
     Retrieve a summary of collateral balances, margin position valuations, equity and margin level.
     Returned variables = {equivalent balance, trade balance, margin, unrealized net profit... see documentation for rest }
@@ -52,10 +51,10 @@ def get_trade_balance(asset):
     [optional] asset='ASSET' => Asset used to determine balance.
     """
 
-    return kraken_request('/0/private/TradeBalance', {'nonce':str(int(1000*time.time())), 'asset':asset}, api_key, api_sec).json()
+    return kraken_request('/0/private/TradeBalance', data, api_key, api_sec).json()
 
 
-def get_open_orders():
+def get_open_orders(data):
     """
     Retrieve information about currently open orders.
 
@@ -64,10 +63,10 @@ def get_open_orders():
     [optional] trades:boolean (default: False) => Whether or not to include trades related to position in output.
     [optional] userref:int32 => Restrict results to given user reference id.
     """
-    return kraken_request('/0/private/OpenOrders', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/OpenOrders', data, api_key, api_sec).json()
 
 
-def get_closed_orders():
+def get_closed_orders(data):
     """
     Retrieve information about orders that have been closed (filled or cancelled THROUGH KRAKEN PRO).
     50 results are returned at a time, the most recent by default.
@@ -83,10 +82,10 @@ def get_closed_orders():
     [optional] closetime:string (default: 'both', enum: ['open', 'close', 'both']) => Which time to use in search.
     [optional] consolidate_taker:boolean (default: True) => Wheter or not to consolidate trades by individual taker trades.
     """
-    return kraken_request('/0/private/ClosedOrders', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/ClosedOrders', data, api_key, api_sec).json()
 
 
-def query_orders_info(txid):
+def query_orders_info(data):
     """
     Retrieve information about specific orders.
 
@@ -97,7 +96,7 @@ def query_orders_info(txid):
     [required] txid:string => Comma delimited list of transaction IDs to query info about (50 maximum).
     [optional] consolidate_taker:boolean (default: True) => Wheter or not to consolidate trades by individual taker trades.
     """
-    return kraken_request('/0/private/QueryOrders', {'nonce':str(int(1000*time.time())), 'txid':txid}, api_key, api_sec).json()
+    return kraken_request('/0/private/QueryOrders', data, api_key, api_sec).json()
 
 
 def get_trades_history(data):
@@ -115,10 +114,10 @@ def get_trades_history(data):
     [optional] ofs:int => Result offset for pagination.
     [optional] consolidate_taker:boolean (default: True) => Wheter or not to consolidate trades by individual taker trades.
     """
-    return kraken_request('/0/private/TradesHistory', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/TradesHistory', data, api_key, api_sec).json()
 
 
-def query_trades_info(txid):
+def query_trades_info(data):
     """
     Retrieve information about specific trades/fills.
 
@@ -127,7 +126,7 @@ def query_trades_info(txid):
     [required] txid:string => Comma delimited list of transaction IDs to query info about (50 maximum).
     [optional] trades:boolean (default: False) => Whether or not to include trades related to position in output.
     """
-    return kraken_request('/0/private/QueryTrades', {'nonce':str(int(1000*time.time())), 'txid':txid}, api_key, api_sec).json()
+    return kraken_request('/0/private/QueryTrades', data, api_key, api_sec).json()
 
 
 def get_open_positions(data):
@@ -140,7 +139,7 @@ def get_open_positions(data):
     [optional] docalcs:boolean (default: False) =>  Whether to include Profit and Loss (P&L) calculations.
     [optional] consolidation:string (value: 'market') => Consolidate positions by market/pair.
     """
-    return kraken_request('/0/private/OpenPositions', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/OpenPositions', data, api_key, api_sec).json()
 
 
 def get_ledgers_info(data):
@@ -158,7 +157,7 @@ def get_ledgers_info(data):
     [optional] ofs:int => Result offset for pagination.
     [optional] without_count:boolean (defualt: False) => If true, does not retrieve count of ledger entries. Request can be noticeably faster for users with many ledger entries as this avoids an extra database query.
     """
-    return kraken_request('/0/private/Ledgers', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/Ledgers', data, api_key, api_sec).json()
 
 
 def query_ledgers(data):
@@ -170,10 +169,10 @@ def query_ledgers(data):
     [optional] id:string => Comma delimited list of ledger IDs to query info about (20 maximum).
     [optional] trades:boolean (default: False) => Whether or not to include trades related to position in output.
     """
-    return kraken_request('/0/private/QueryLedgers', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/QueryLedgers', data, api_key, api_sec).json()
 
 
-def get_trade_volume():
+def get_trade_volume(data):
     """
     Returns 30 day USD trading volume and resulting fee schedule for any asset pair(s) provided.
     Note: If an asset pair is on a maker/taker fee schedule, the taker side is given in fees and maker side in fees_maker. For pairs not on maker/taker, they will only be given in fees.
@@ -182,7 +181,7 @@ def get_trade_volume():
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.
     [optional] pair:string => Comma delimited list of asset pairs to get fee info on.
     """
-    return kraken_request('/0/private/TradeVolume', {'nonce':str(int(1000*time.time()))}, api_key, api_sec).json()
+    return kraken_request('/0/private/TradeVolume', data, api_key, api_sec).json()
 
 
 def request_export_report(data):
@@ -230,5 +229,3 @@ def delete_export_report(data):
     [required] type:string (enum: ['cancel', 'delete']) => delete can only be used for reports that have already been processed. Use cancel for queued or processing reports.
     """
     return kraken_request('/0/private/RemoveExport', data, api_key, api_sec).json()
-
-#todo: function that generates data, function that generates nonce
