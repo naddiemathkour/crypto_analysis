@@ -1,12 +1,12 @@
-import requests
-import time
-from ..kraken_signature.authorize_signature import *
-
 """
 Private Account Data api access points for Kraken.
 Access to these functions requires a signature. This signature is aquired with accompanied and imported authorize_signature.py file.
 Link to published REST API documentation: https://docs.kraken.com/rest/#tag/Account-Data
 """
+
+import requests
+import time
+from ..kraken_signature.authorize_signature import *
 
 def kraken_request(uri_path, data, api_key, api_sec):
     """

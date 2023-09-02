@@ -1,7 +1,3 @@
-import requests
-import time
-from ..kraken_signature.authorize_signature import *
-
 """
 Private Trading api access points for Kraken.
 Access to these functions requires a signature. This signature is aquired with accompanied and imported authorize_signature.py file.
@@ -10,6 +6,10 @@ Link to published REST API documentation: https://docs.kraken.com/rest/#tag/Trad
 Review of online documentation is HIGHLY recommended for ALL functions. Implementation disregards many optional parameters in
 function headers.
 """
+
+import requests
+import time
+from ..kraken_signature.authorize_signature import *
 
 def kraken_request(uri_path, data, api_key, api_sec):
     """
@@ -35,7 +35,7 @@ def add_order(data):
     [required] ordertype:string (enum: ['market', 'limit', 'stop-loss', 'take-profit', ... , 'settle-position]) => Order type.
     [required] type:string (enum: ['buy', 'sell']) => Order direction (buy/sell).
     [required] volume:string => Order quantity in terms of the base asset. Can be specified as 0 for closing margin orders to automatically fill the requisite quantity. This can only be used with limit order type.
-    [required] pair:string => Asset pair 'id' or 'altname'.
+    [required] pair:string => Asset pair 'id' or 'altname'. Format = <BaseCurrency><QuoteCurrency> e.g: ADAUSD
 
     Note: Please review the online documentation for optional Data Parameters.
     """
@@ -50,7 +50,7 @@ def add_order_batch(data):
     Data Parameters:
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.
     [required] orders:Array of Order => See online documentation for details of Order parameters.
-    [required] pair:string => Asset pair 'id' or 'altname'
+    [required] pair:string => Asset pair 'id' or 'altname'. Format = <BaseCurrency><QuoteCurrency> e.g: ADAUSD
     [optional] deadline:string => RFC3339 timestamp (e.g. 2021-04-01T00:18:45Z) after which the matching engine should reject the new order request, in presence of latency or order queueing. min now() + 2 seconds, max now() + 60 seconds.
     [optional] validate:boolean (default: False) => Validate inputs only. Do not submit order.
     """
@@ -68,7 +68,7 @@ def edit_order(data):
     [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.
     [required] txid:string|integer => Original Order ID or User Reference Id (userref) which is user-specified integer id used with the original order.
     If userref is not unique and was used with multiple order, edit request is denied with an error.
-    [required] pair:string => Asset pair 'id' or 'altname'
+    [required] pair:string => Asset pair 'id' or 'altname'. Format = <BaseCurrency><QuoteCurrency> e.g: ADAUSD
     """
     return kraken_request('/0/private/EditOrder', data, api_key, api_sec).json()
 
