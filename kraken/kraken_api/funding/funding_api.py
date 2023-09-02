@@ -29,3 +29,17 @@ def get_deposit_methods():
     [required] asset:string => Asset being deposited.
     """
     return kraken_request('/0/private/DepositMethods', {'nonce':str(int(1000*time.time())), 'asset':'USD'}, api_key, api_sec).json()
+
+
+def get_deposit_addresses():
+    """
+    Retrieve (or generate a new) deposit addresses for a particular asset and method.
+
+    Data Parameters:
+    [required] nonce:int32 => 'number once' must be a changing and incrementing number with each api call.
+    [required] asset:string => Asset being deposited.
+    [required] method:string => Name of deposit method.
+    [optional] new:boolean (default: False) => Whether or not to generate a new address.
+    [optoinal] amount:string|int|number => Amount you wish to deposit (only required for method=Bitcoin Lightening)
+    """
+    return kraken_request('/0/private/DepositAddresses', {'nonce':str(int(1000*time.time())), 'asset':'USD', 'method': 'MVB Bank (Wire)', 'amount': 10}, api_key, api_sec).json()
