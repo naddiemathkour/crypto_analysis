@@ -18,7 +18,4 @@ Code: Python
 Database: Postgress
 
 Front End:
-Framework: Angular
-Code: Typescript + Node
-
-Server: TBD
+Framework: Angular (TypeScript + Node)
