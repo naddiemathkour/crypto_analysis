@@ -12,7 +12,7 @@ def add_order_payload(pair, volume, userref):
         'type': 'buy',
         'volume': volume,
         'pair': pair,
-        'validate': True #Remove after testing
+        'validate': True #True = order testing, Flase = real order
     }
 
 
