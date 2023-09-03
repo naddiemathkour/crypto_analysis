@@ -11,6 +11,6 @@ def get_text_payload():
     portfolio_balance = account_data_api.get_trade_balance(data_payload_generator.get_nonce_dict())['result']['eb']
     return {
         'tokens': token_balances,
-        'portfolio balance': portfolio_balance
+        'portfolio_balance': portfolio_balance
     }
     
