@@ -4,15 +4,22 @@ def nonce():
     return str(int(1000 * time.time())) # without *1000, nonce may return the same value if generated within 1 second
 
 
-def add_order_payload(pair, volume):
+def add_order_payload(pair, volume, userref):
     return {
         'nonce': nonce(),
-        'userref': 0,
+        'userref': userref,
         'ordertype': 'market',
         'type': 'buy',
         'volume': volume,
         'pair': pair,
         'validate': True #Remove after testing
+    }
+
+
+def recent_closed_order_payload(userref):
+    return {
+        'nonce': nonce(),
+        'userref': userref
     }
 
 
