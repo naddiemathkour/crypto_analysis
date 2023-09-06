@@ -8,12 +8,12 @@ def main():
     
     userref = executions.get_userref() + 1
 
-    for pair, volume in asset_volume_pairs.items():
-        pp(executions.execute_order(pair, volume, userref))
+    #for pair, volume in asset_volume_pairs.items():
+    #    pp(executions.execute_order(pair, volume, userref))
     
 
 
-    print(text_connection.send_message(executions.get_text_payload(userref)))
+    text_connection.send_message(executions.get_text_payload(userref))
 
 
 if __name__ == '__main__':
