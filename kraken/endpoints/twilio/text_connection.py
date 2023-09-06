@@ -1,19 +1,10 @@
 from twilio.rest import Client
 import dotenv
 
-account_sid = dotenv.dotenv_values(dotenv.find_dotenv())['TWILIO_ACC_SID']
-auth_token = dotenv.dotenv_values(dotenv.find_dotenv())['TWILIO_AUTH_TOKEN']
-send_to = dotenv.dotenv_values(dotenv.find_dotenv())['SEND_TO']
+message_header = dotenv.dotenv_values(dotenv.find_dotenv())
 
-client = Client(account_sid, auth_token)
+client = Client(message_header['TWILIO_ACC_SID'], message_header['TWILIO_AUTH_TOKEN'])
 
-def send_message(payload):
-    tokens = sorted(list(payload['tokens'].keys()))
-    tokens.remove('USD.HOLD')
-    message_append = '{coin}: {balance}\n'
-    message = 'Weekly purchase executed. Token balances:\n'
-    for token in tokens:
-        message += message_append.format(coin=token, balance=payload['tokens'].pop(token))
-    message += message_append.format(coin='Cost of current batch', balance=payload.pop('costs'))
-    message += 'Portfolio Balance: ' + payload['portfolio_balance']
-    return client.messages.create(body=message, from_='+18883114089', to=send_to)
+def send_message(message):
+    print(message)
+    return client.messages.create(body=message, from_=message_header['SEND_FROM'], to=message_header['SEND_TO'])
