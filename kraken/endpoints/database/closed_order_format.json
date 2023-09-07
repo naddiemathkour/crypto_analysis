@@ -1,0 +1,13 @@
+ {
+  "txid": "ORTNKC-VWAAM-6TJQPC",
+  "userref": 0,
+  "timestamp": "2023-08-30 17:53:12.754072",
+  "pair": "ADAUSD",
+  "order_type": "buy",
+  "order": "buy 27.000000 (USD) ADAUSD @ market",
+  "status": "closed",
+  "tok_price": 0.26553,
+  "volume": 101.6834256,
+  "fee": 0.0702,
+  "total_cost": 27.070199999568
+  }

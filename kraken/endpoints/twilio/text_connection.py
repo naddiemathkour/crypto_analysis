@@ -7,4 +7,4 @@ client = Client(message_header['TWILIO_ACC_SID'], message_header['TWILIO_AUTH_TO
 
 def send_message(message):
     print(message)
-    return client.messages.create(body=message, from_=message_header['SEND_FROM'], to=message_header['SEND_TO'])
+    #return client.messages.create(body=message, from_=message_header['SEND_FROM'], to=message_header['SEND_TO'])
