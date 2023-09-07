@@ -12,7 +12,8 @@ def main():
     #for pair, volume in asset_volume_pairs.items():
     #    pp(executions.execute_order(pair, volume, userref))
     
-    database.connect(executions.get_db_closed_orders())
+    #add new orders to database
+    #database.connect(executions.get_db_closed_orders(userref))
 
 
     #text_connection.send_message(executions.get_text_payload(userref))

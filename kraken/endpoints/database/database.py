@@ -16,18 +16,15 @@ def connect(insert_records):
         cursor = connection.cursor()
 
         #wireframe SQL statement
-        postgres_statement = 'INSERT INTO kraken_data VALUES({txid}, {userref}, {timestamp}, {pair}, {order_type}, {order}, {status}, {tok_price}, {volume}, {fee}, {total_cost})'
-
+        postgres_statement = "INSERT INTO kraken_data VALUES('{txid}', '{userref}', '{timestamp}', '{pair}', '{order_type}', '{order}', '{status}', '{tok_price}', '{volume}', '{fee}', '{total_cost}')"
+        
+        #insert all rows in insert_records
         for row in insert_records:
-            print(postgres_statement.format(**row))
-            
+            cursor.execute(postgres_statement.format(**row))
         
-        #connection.commit()
+        #commit inserts
+        connection.commit()
 
-        cursor.execute('SELECT * FROM kraken_data')
-        display = cursor.fetchall()
-        print(display)
-        
         #close cursor
         cursor.close()
 

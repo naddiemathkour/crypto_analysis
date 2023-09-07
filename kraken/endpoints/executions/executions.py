@@ -12,8 +12,8 @@ def get_userref():
     return values.pop('userref')
 
 
-def get_db_closed_orders():
-    closed_orders = account_data_api.get_closed_orders(data_payload_generator.get_nonce_dict())['result']['closed']
+def get_db_closed_orders(userref):
+    closed_orders = account_data_api.get_closed_orders(data_payload_generator.recent_closed_order_payload(userref))['result']['closed']
     txid_list = list(closed_orders)
     order_details = list(closed_orders.values())
 
@@ -30,7 +30,7 @@ def get_db_closed_orders():
 
         data_to_save.append({
             'txid': txid_list[i],
-            'usrref': operator.itemgetter('userref')(curr_order),
+            'userref': operator.itemgetter('userref')(curr_order),
             'timestamp': date_time.isoformat(sep=' ', timespec='auto'),
             'pair': operator.itemgetter('pair')(order_description),
             'order_type': operator.itemgetter('type')(order_description),
