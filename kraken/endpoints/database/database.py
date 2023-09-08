@@ -2,7 +2,7 @@ import psycopg2
 
 from .config import config
 
-def connect(insert_records):
+def connect(records):
     connection = None
     params = config()
 
@@ -19,7 +19,7 @@ def connect(insert_records):
         postgres_statement = "INSERT INTO kraken_data VALUES('{txid}', '{userref}', '{timestamp}', '{pair}', '{order_type}', '{order}', '{status}', '{tok_price}', '{volume}', '{fee}', '{total_cost}')"
         
         #insert all rows in insert_records
-        for row in insert_records:
+        for row in records:
             cursor.execute(postgres_statement.format(**row))
         
         #commit inserts

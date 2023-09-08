@@ -13,8 +13,9 @@ def main():
     #    pp(executions.execute_order(pair, volume, userref))
     
     #add new orders to database
-    #database.connect(executions.get_db_closed_orders(userref))
+    database.connect(executions.get_db_closed_orders())
 
+    executions.get_closed_orders()
 
     #text_connection.send_message(executions.get_text_payload(userref))
 
